@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 m1, m2, m3 = 1.0, 1.0, 1.0
 
 # Constante gravitacional en unidades estándar
+# 6.67430e-11
 G = 1
 
 # Función para calcular el centro de masa del sistema
@@ -29,6 +30,8 @@ def calcular_fuerza(r1, r2, r3):
 def paso_euler(r1, r2, r3, v1, v2, v3, dt):
     F1, F2, F3 = calcular_fuerza(r1, r2, r3)
     
+    #print(F1, F2, F3)
+
     a1 = F1 / m1
     a2 = F2 / m2
     a3 = F3 / m3
@@ -169,7 +172,7 @@ def paso_rk5(r1, r2, r3, v1, v2, v3, dt):
 
 
 # Función para simular y graficar las trayectorias centradas en la masa
-def simulate_and_plot(method, title, steps=3000, dt=0.01):
+def simulate_and_plot(method, title, steps=10000, dt=0.01):
     r1, r2, r3 = r1_0, r2_0, r3_0
     v1, v2, v3 = v1_0, v2_0, v3_0
 
@@ -209,13 +212,13 @@ v2_0_stable = np.array([0.466203685, 0.43236573])
 v3_0_stable = np.array([-0.93240737, -0.86473146])
 
 # Configuración para un sistema caótico: posiciones y velocidades desbalanceadas
-r1_0_chaotic = np.array([1.0, 0.5])
-r2_0_chaotic = np.array([-1.0, -0.5])
-r3_0_chaotic = np.array([0.5, -1.0])
+r1_0_chaotic = np.array([-0.5, 1.0])
+r2_0_chaotic = np.array([0.5, 0.0])
+r3_0_chaotic = np.array([0.0, 0.001])
 
-v1_0_chaotic = np.array([0.6, -0.4])
-v2_0_chaotic = np.array([-0.6, 0.4])
-v3_0_chaotic = np.array([0.0, 0.8])
+v1_0_chaotic = np.array([0.0, 0.347111])
+v2_0_chaotic = np.array([0.0, -0.347111])
+v3_0_chaotic = np.array([0.0, 0.0])
 
 # Sistema estable - Método de Euler
 r1_0, r2_0, r3_0 = r1_0_stable, r2_0_stable, r3_0_stable
@@ -227,6 +230,7 @@ r1_0, r2_0, r3_0 = r1_0_chaotic, r2_0_chaotic, r3_0_chaotic
 v1_0, v2_0, v3_0 = v1_0_chaotic, v2_0_chaotic, v3_0_chaotic
 simulate_and_plot(paso_euler, "Sistema Caótico - Euler")
 
+'''
 # Sistema estable - Método RK4
 r1_0, r2_0, r3_0 = r1_0_stable, r2_0_stable, r3_0_stable
 v1_0, v2_0, v3_0 = v1_0_stable, v2_0_stable, v3_0_stable
@@ -246,3 +250,4 @@ simulate_and_plot(paso_rk5, "Sistema Estable - RK5")
 r1_0, r2_0, r3_0 = r1_0_chaotic, r2_0_chaotic, r3_0_chaotic
 v1_0, v2_0, v3_0 = v1_0_chaotic, v2_0_chaotic, v3_0_chaotic
 simulate_and_plot(paso_rk5, "Sistema Caótico - RK5")
+'''
