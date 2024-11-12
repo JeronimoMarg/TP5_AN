@@ -6,8 +6,9 @@ import time
 
 m1 = 1.0
 m2 = 1.0
-m3 = 0.000001
+m3 = 1.0
 
+#SISTEMA CAOTICO
 # Position
 position_1 = np.array([-0.5,  1.0,  0.0])
 position_2 = np.array([0.5,  0.0,  0.0])
@@ -17,6 +18,61 @@ position_3 = np.array([0.0,  0.001, 1.0])
 velocity_1 = np.array([0.0, 0.347111, 0])
 velocity_2 = np.array([0.0, -0.347111, 0.0])
 velocity_3 = np.array([0.0, 0.0, -0.1])
+
+#SISTEMA ESTABLE
+# Position
+position_1 = np.array([-1.0, 0.0, 0.0])
+position_2 = np.array([1.0, 0.0, 0.0])
+position_3 = np.array([0.0, 0.0, 0.0])
+
+# Velocity
+velocity_1 = np.array([0.0, 0.5, 0.0])
+velocity_2 = np.array([0.0, -0.5, 0.0])
+velocity_3 = np.array([0.0, 0.0, 0.0])
+
+#SISTEMA ESTABLE (8)
+# Position
+position_1 = np.array([-0.97000436, 0.24308753, 0.0])
+position_2 = np.array([0.97000436, -0.24308753, 0.0])
+position_3 = np.array([0.0, 0.0, 0.0])
+
+# Velocity
+velocity_1 = np.array([0.466203685, 0.43236573, 0.0])
+velocity_2 = np.array([0.466203685, 0.43236573, 0.0])
+velocity_3 = np.array([-0.93240737, -0.86473146, 0.0])
+
+#SISTEMA ESTABLE (EULER COLINEAL)
+# Position
+position_1 = np.array([-1.0, 0.0, 0.0])
+position_2 = np.array([0.0, 0.0, 0.0])
+position_3 = np.array([1.0, 0.0, 0.0])
+
+# Velocity
+velocity_1 = np.array([0.5, 0.0, 0.0])
+velocity_2 = np.array([0.0, 0.0, 0.0])
+velocity_3 = np.array([-0.5, 0.0, 0.0])
+
+#SISTEMA ESTABLE (LAGRANGE)
+# Position
+position_1 = np.array([1.0, 0.0, 0.0])
+position_2 = np.array([-0.5, np.sqrt(3)/2, 0.0])
+position_3 = np.array([-0.5, -np.sqrt(3)/2, 0.0])
+
+# Velocity
+velocity_1 = np.array([0.0, 0.5, 0.0])
+velocity_2 = np.array([-0.5 * np.sqrt(3)/2, -0.5, 0.0])
+velocity_3 = np.array([0.5 * np.sqrt(3)/2, -0.5, 0.0])
+
+#SISTEMA PETALOS
+# Position
+position_1 = np.array([1.0, 0.5, 0.0])
+position_2 = np.array([-1.0, -0.5, 0.0])
+position_3 = np.array([0.5, -1.0, 0.0])
+
+# Velocity
+velocity_1 = np.array([0.6, -0.4, 0.0])
+velocity_2 = np.array([-0.6, 0.4, 0.0])
+velocity_3 = np.array([0.0, 0.8, 0.0])
 
 # Time parameters
 time_s, time_e = 0, 7
@@ -86,7 +142,7 @@ ax.plot([positions_1[-1, 0]], [positions_1[-1, 1]], [positions_1[-1, 2]], 'o', c
 ax.plot([positions_2[-1, 0]], [positions_2[-1, 1]], [positions_2[-1, 2]], 'o', color='red', markersize=6)
 ax.plot([positions_3[-1, 0]], [positions_3[-1, 1]], [positions_3[-1, 2]], 'o', color='blue', markersize=6)
 
-ax.set_title("The 3-Body Problem (RK4 Method)")
+ax.set_title("Problema de los tres cuerpos (Euler)")
 ax.set_xlabel("x")
 ax.set_ylabel("y")
 ax.set_zlabel("z")
