@@ -76,19 +76,44 @@ def calc_energies(r1, r2, r3, v1, v2, v3):
     return E_kin + E_pot
 
 # Función para calcular la energía acumulada usando Trapecio, Newton-Coates, y Cuadratura de Gauss
+import numpy as np
+
 def calc_accumulated_energy(energies, dt):
     energies = np.array(energies)
-    E_trapecio = np.trapezoid(energies, dx=dt)  # Uso de trapezoid en vez de trapz
     
+    # Método del Trapecio
+    E_trapecio = np.trapezoid(energies, dx=dt)
+    
+    # Método de Newton-Coates (Simpson)
     if len(energies) % 2 == 0:
-        energies = energies[:-1]
+        energies = energies[:-1]  # Asegura que haya un número impar de puntos para Simpson
     E_newton_coates = np.sum((dt / 3) * (energies[0:-1:2] + 4 * energies[1::2] + energies[2::2]))
     
-    weights = [0.5, 0.5]
-    E_gauss = sum(w * e for w, e in zip(weights, energies[:2]))
-    
+    # Cuadratura de Gauss en todo el intervalo con 4 puntos
+    gauss_weights = np.array([0.3478548451, 0.6521451549, 0.6521451549, 0.3478548451])
+    gauss_points = np.array([-0.8611363116, -0.3399810436, 0.3399810436, 0.8611363116])  # Puntos de Gauss en [-1,1]
+
+    # Transformación para todo el intervalo
+    a, b = 0, len(energies) * dt  # Integrar sobre todo el intervalo de tiempo
+    midpoint = (b + a) / 2
+    half_range = (b - a) / 2
+
+    # Convertimos los puntos de Gauss al rango total de integración [a, b]
+    gauss_eval_points = midpoint + half_range * gauss_points
+
+    # Convertimos los puntos de Gauss en índices para evaluar en 'energies'
+    indices = (gauss_eval_points / dt).astype(int)
+    indices = np.clip(indices, 0, len(energies) - 1)  # Asegura que los índices estén dentro del rango
+
+    # Tomamos los valores de energía en estos índices
+    gauss_eval_values = energies[indices]
+
+    # Calculamos la integral con los pesos de Gauss-Legendre
+    E_gauss = sum(w * e for w, e in zip(gauss_weights, gauss_eval_values)) * half_range
+
     return E_trapecio, E_newton_coates, E_gauss
 
+    
 # Función para simular, graficar y calcular la energía
 def simulate_and_plot(method, title, steps=10000, dt=0.001):
     print(f"Simulación iniciada: {title}")
