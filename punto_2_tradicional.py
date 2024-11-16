@@ -1,19 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Definimos las masas estándar para los tres cuerpos
-m1, m2, m3 = 1.0, 1.0, 1.0
 
-# Constante gravitacional en unidades estándar
 # 6.67430e-11
 G = 1
+m1, m2, m3 = 1.0, 1.0, 1.0
 
-# Función para calcular el centro de masa del sistema
 def center_of_mass(r1, r2, r3):
     r_cm = (m1 * r1 + m2 * r2 + m3 * r3) / (m1 + m2 + m3)
     return r_cm
 
-# Función que calcula las fuerzas gravitacionales entre los cuerpos
 def calcular_fuerza(r1, r2, r3):
     def fuerza(rA, rB, mA, mB):
         rAB = rB - rA
@@ -26,7 +22,7 @@ def calcular_fuerza(r1, r2, r3):
     
     return F1, F2, F3
 
-# Método de Euler
+# EULER
 def paso_euler(r1, r2, r3, v1, v2, v3, dt):
     F1, F2, F3 = calcular_fuerza(r1, r2, r3)
     
@@ -46,7 +42,7 @@ def paso_euler(r1, r2, r3, v1, v2, v3, dt):
     
     return r1_nuevo, r2_nuevo, r3_nuevo, v1_nuevo, v2_nuevo, v3_nuevo
 
-# Método de Runge-Kutta de cuarto orden (RK4)
+# RK4
 def paso_rk4(r1, r2, r3, v1, v2, v3, dt):
 
     def aceleracion(r1, r2, r3):
@@ -99,7 +95,7 @@ def paso_rk4(r1, r2, r3, v1, v2, v3, dt):
     
     return r1_nuevo, r2_nuevo, r3_nuevo, v1_nuevo, v2_nuevo, v3_nuevo
 
-# Método de Runge-Kutta de quinto orden (RK5)
+# RK5
 def paso_rk5(r1, r2, r3, v1, v2, v3, dt):
 
     def aceleracion(r1, r2, r3):
@@ -171,7 +167,7 @@ def paso_rk5(r1, r2, r3, v1, v2, v3, dt):
     return r1_siguiente, r2_siguiente, r3_siguiente, v1_siguiente, v2_siguiente, v3_siguiente
 
 
-# Función para simular y graficar las trayectorias centradas en la masa
+# SIMULACION
 def simulate_and_plot(method, title, steps=10000, dt=0.01):
     r1, r2, r3 = r1_0, r2_0, r3_0
     v1, v2, v3 = v1_0, v2_0, v3_0
@@ -230,7 +226,6 @@ r1_0, r2_0, r3_0 = r1_0_chaotic, r2_0_chaotic, r3_0_chaotic
 v1_0, v2_0, v3_0 = v1_0_chaotic, v2_0_chaotic, v3_0_chaotic
 simulate_and_plot(paso_euler, "Sistema Caótico - Euler")
 
-'''
 # Sistema estable - Método RK4
 r1_0, r2_0, r3_0 = r1_0_stable, r2_0_stable, r3_0_stable
 v1_0, v2_0, v3_0 = v1_0_stable, v2_0_stable, v3_0_stable
@@ -241,13 +236,12 @@ r1_0, r2_0, r3_0 = r1_0_chaotic, r2_0_chaotic, r3_0_chaotic
 v1_0, v2_0, v3_0 = v1_0_chaotic, v2_0_chaotic, v3_0_chaotic
 simulate_and_plot(paso_rk4, "Sistema Caótico - RK4")
 
-# Sistema estable - Método RK4
+# Sistema estable - Método RK5
 r1_0, r2_0, r3_0 = r1_0_stable, r2_0_stable, r3_0_stable
 v1_0, v2_0, v3_0 = v1_0_stable, v2_0_stable, v3_0_stable
 simulate_and_plot(paso_rk5, "Sistema Estable - RK5")
 
-# Sistema caótico - Método RK4
+# Sistema caótico - Método RK5
 r1_0, r2_0, r3_0 = r1_0_chaotic, r2_0_chaotic, r3_0_chaotic
 v1_0, v2_0, v3_0 = v1_0_chaotic, v2_0_chaotic, v3_0_chaotic
 simulate_and_plot(paso_rk5, "Sistema Caótico - RK5")
-'''

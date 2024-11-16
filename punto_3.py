@@ -1,15 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Definimos las masas estándar para los tres cuerpos
 m1, m2, m3 = 1.0, 1.0, 1.0
-G = 1  # Constante gravitacional
+G = 1
 
-# Función para calcular el centro de masa del sistema
 def center_of_mass(r1, r2, r3):
     return (m1 * r1 + m2 * r2 + m3 * r3) / (m1 + m2 + m3)
 
-# Función para calcular las fuerzas gravitacionales entre los cuerpos
+# fuerzas gravitacionales
 def calc_forces(r1, r2, r3):
     def force(rA, rB, mA, mB):
         rAB = rB - rA
@@ -75,46 +73,42 @@ def calc_energies(r1, r2, r3, v1, v2, v3):
     E_pot = -G * (m1 * m2 / dist12 + m1 * m3 / dist13 + m2 * m3 / dist23)
     return E_kin + E_pot
 
-# Función para calcular la energía acumulada usando Trapecio, Newton-Coates, y Cuadratura de Gauss
+# ------------------- #
+# PUNTO 3 Y 4 # 
 import numpy as np
 
 def calc_accumulated_energy(energies, dt):
     energies = np.array(energies)
     
-    # Método del Trapecio
+    # trapecio
     E_trapecio = np.trapezoid(energies, dx=dt)
     
-    # Método de Newton-Coates (Simpson)
+    # simpson 1/3
     if len(energies) % 2 == 0:
-        energies = energies[:-1]  # Asegura que haya un número impar de puntos para Simpson
+        energies = energies[:-1]
     E_newton_coates = np.sum((dt / 3) * (energies[0:-1:2] + 4 * energies[1::2] + energies[2::2]))
     
-    # Cuadratura de Gauss en todo el intervalo con 4 puntos
+    # cuadratura de gauss
     gauss_weights = np.array([0.3478548451, 0.6521451549, 0.6521451549, 0.3478548451])
-    gauss_points = np.array([-0.8611363116, -0.3399810436, 0.3399810436, 0.8611363116])  # Puntos de Gauss en [-1,1]
+    gauss_points = np.array([-0.8611363116, -0.3399810436, 0.3399810436, 0.8611363116])
 
-    # Transformación para todo el intervalo
-    a, b = 0, len(energies) * dt  # Integrar sobre todo el intervalo de tiempo
+    a, b = 0, len(energies) * dt
     midpoint = (b + a) / 2
     half_range = (b - a) / 2
 
-    # Convertimos los puntos de Gauss al rango total de integración [a, b]
     gauss_eval_points = midpoint + half_range * gauss_points
 
-    # Convertimos los puntos de Gauss en índices para evaluar en 'energies'
     indices = (gauss_eval_points / dt).astype(int)
-    indices = np.clip(indices, 0, len(energies) - 1)  # Asegura que los índices estén dentro del rango
+    indices = np.clip(indices, 0, len(energies) - 1)
 
-    # Tomamos los valores de energía en estos índices
     gauss_eval_values = energies[indices]
 
-    # Calculamos la integral con los pesos de Gauss-Legendre
     E_gauss = sum(w * e for w, e in zip(gauss_weights, gauss_eval_values)) * half_range
 
     return E_trapecio, E_newton_coates, E_gauss
 
     
-# Función para simular, graficar y calcular la energía
+# simulacion
 def simulate_and_plot(method, title, steps=10000, dt=0.001):
     print(f"Simulación iniciada: {title}")
     
@@ -123,7 +117,6 @@ def simulate_and_plot(method, title, steps=10000, dt=0.001):
 
     r1_hist, r2_hist, r3_hist, cm_hist, energy_hist = [r1.copy()], [r2.copy()], [r3.copy()], [], []
     
-    # Variables para la conservación de energía
     initial_energy = None
     max_energy_variation = 0
 
